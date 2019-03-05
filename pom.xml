@@ -12,10 +12,15 @@
 	<artifactId>lotery</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>lotery</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Lottery project with Spring Boot</description>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+		<!--<junit.version>4.12</junit.version>-->
+		<junit.jupiter.version>5.2.0</junit.jupiter.version>
+		<!--<junit.vintage.version>${junit.version}.0</junit.vintage.version>-->
+		<junit.platform.version>1.4.0</junit.platform.version>
 	</properties>
 
 	<dependencies>
@@ -29,6 +34,32 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit.jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- To run tests on IDE such as Eclipse, Intellij -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-runner</artifactId>
+			<version>${junit.platform.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.junit.vintage</groupId>-->
+			<!--<artifactId>junit-vintage-engine</artifactId>-->
+			<!--<version>${junit.vintage.version}</version>-->
+			<!--<scope>test</scope>-->
+		<!--</dependency>-->
 	</dependencies>
 
 	<build>
@@ -36,6 +67,23 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.1</version>
+				<configuration>
+					<excludes>
+						<exclude/>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
