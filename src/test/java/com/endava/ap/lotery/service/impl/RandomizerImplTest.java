@@ -1,15 +1,53 @@
 package com.endava.ap.lotery.service.impl;
 
+import com.endava.ap.lotery.model.Participant;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
+
+import static org.hamcrest.CoreMatchers.both;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThan;
 
 public class RandomizerImplTest {
 
     private final RandomizerImpl randomizer = new RandomizerImpl();
 
     @Test
-    void aVoid(){
+    void whenGetWinner() {
+        //when
+        Participant participant = randomizer.getWinner();
+
+        //then
+        Assert.assertEquals("Winning ticket should have 6 numbers", 6, participant.getTicket().size());
+        participant.getTicket().forEach(number ->
+                Assert.assertThat("All numbers should be between 1 and 50",
+                        number,
+                        is(both(greaterThan(0)).and(lessThan(51)))));
+
+    }
+
+    @Test
+    void whenGetWinnerWithComments() {
+        /* Prepare data.
+        Nothing to prepare here since the method does not accept any data in entry and there shouldn't be any specific state
+        for it to be processed */
+
+        /* Execute the tested method */
+        //when
+        Participant participant = randomizer.getWinner();
+
+        /* Do all the assertions on the expected results and behaviours */
+        //then
+        Assert.assertEquals("Winning ticket should have 6 numbers", 6, participant.getTicket().size());
+        participant.getTicket().forEach(number ->
+                Assert.assertThat("All numbers should be between 1 and 50",
+                        number,
+                        is(both(greaterThan(0)).and(lessThan(51)))));
+
+
+        /* Show the actual result */
+//        System.out.println(participant.getTicket());
     }
 
 }
