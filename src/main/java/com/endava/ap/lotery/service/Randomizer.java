@@ -1,7 +1,7 @@
 package com.endava.ap.lotery.service;
 
-import com.endava.ap.lotery.model.Participant;
+import com.endava.ap.lotery.model.Ticket;
 
 public interface Randomizer {
-    Participant getWinner();
+    Ticket getWinner();
 }

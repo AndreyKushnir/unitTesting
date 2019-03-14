@@ -1,24 +1,24 @@
 package com.endava.ap.lotery.model;
 
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class Participant {
 
-    private List<Integer> ticket = new ArrayList<>();
+    private List<Ticket> ticketList = new ArrayList<>();
 
     public Participant() {
     }
 
-    public void addNumber(Integer number){
-        this.ticket.add(number);
+    void addTicket(Ticket ticket) {
+        this.ticketList.add(ticket);
     }
 
-    public Integer getNumber(Integer index){
-        return this.ticket.get(index);
+    public List<Ticket> getTicketList() {
+        return ticketList;
     }
 
-    public List<Integer> getTicket(){
-        return this.ticket;
-    }
 }
