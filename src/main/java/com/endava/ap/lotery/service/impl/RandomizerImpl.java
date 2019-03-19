@@ -7,6 +7,8 @@ import com.endava.ap.lotery.service.Randomizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.Random;
 
@@ -14,14 +16,13 @@ import java.util.Random;
 public class RandomizerImpl implements Randomizer {
 
     @Autowired
-    private ParticipantDao participantDao;
+    ParticipantDao participantDao;
 
     //The winning participant is always the one with ID = 1
-
     @Transactional
     public Ticket getWinner() {
         Random rand = new Random();
-        Participant winningParticipant = participantDao.getOne(1L);
+        Participant winningParticipant = participantDao.findById(1L).get();
         Ticket winner = new Ticket();
         int[] winningNumbers = new int[6];
         for (int i = 0; i < 6; i++) {
@@ -36,6 +37,7 @@ public class RandomizerImpl implements Randomizer {
         winner.setNumber6(winningNumbers[5]);
 
         winningParticipant.addTicket(winner);
+        participantDao.saveAndFlush(winningParticipant);
 
         return winner;
     }

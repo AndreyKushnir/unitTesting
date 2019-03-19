@@ -5,6 +5,7 @@ import com.endava.ap.lotery.model.Participant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,8 +13,15 @@ import javax.transaction.Transactional;
 @Service
 public class DatabaseInitServiceImpl implements ApplicationListener<ContextRefreshedEvent> {
 
+    private ParticipantDao participantDao;
+    private Environment environment;
+
     @Autowired
-    public ParticipantDao participantDao;
+    public DatabaseInitServiceImpl(Environment environment,
+                                   ParticipantDao participantDao){
+        this.participantDao = participantDao;
+        this.environment = environment;
+    }
 
     @Transactional
     @Override
@@ -27,6 +35,6 @@ public class DatabaseInitServiceImpl implements ApplicationListener<ContextRefre
         participant.setFirstName("Lucky");
         participant.setLastName("Winner");
 
-        participantDao.save(participant);
+        participantDao.saveAndFlush(participant);
     }
 }

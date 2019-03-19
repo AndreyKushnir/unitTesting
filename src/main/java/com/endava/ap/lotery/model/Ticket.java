@@ -117,4 +117,12 @@ public class Ticket {
     public void setNumber1(Integer number1) {
         this.number1 = number1;
     }
+
+    public Participant getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Participant owner) {
+        this.owner = owner;
+    }
 }
