@@ -119,7 +119,7 @@ public class CashierImplTest {
         Assert.assertEquals("Numbers should be the same as in test", chosenNumbers.get(5), boughtTicket.getNumber6());
     }
 
-//    @Test(expected = InvalidTicketNumberException.class)
+    //    @Test(expected = InvalidTicketNumberException.class)
     @Test
     void whenBuyTicket_WithIncorrectNumber_ExpectException() {
         //Arrange
@@ -150,30 +150,27 @@ public class CashierImplTest {
         ticket.setNumber2(12);
         ticket.setNumber3(7);
         ticket.setNumber4(33);
-        ticket.setNumber5(45);
+        ticket.setNumber5(55);
         ticket.setNumber6(1);
 
         ArgumentCaptor<Ticket> ticketArgumentCaptor = ArgumentCaptor.forClass(Ticket.class);
 
+        Ticket boughtTicket = null;
+
         when(ticketDao.save(ticketArgumentCaptor.capture())).thenReturn(ticket);
 
         //Act
-        Assertions.assertThrows(InvalidTicketNumberException.class, () -> {
-            cashier.buyTicket(chosenNumbers, registeredParticipant);
-        });
-//        Ticket boughtTicket = cashier.buyTicket(chosenNumbers, registeredParticipant);
+        InvalidTicketNumberException thrown = Assertions.assertThrows(InvalidTicketNumberException.class,
+                () -> {
+                    cashier.buyTicket(chosenNumbers, registeredParticipant);
+                }
+        );
 
         //Assert
         verify(ticketDao, times(0)).save(ticketArgumentCaptor.capture());
+        Assert.assertNull("Ticket should be null", boughtTicket);
+        Assertions.assertTrue(thrown.getMessage().contains("Numbers should be between 1 and 50"));
 
-//        Assert.assertNotNull("Ticket should not be null", ticket);
-//        Assert.assertTrue("Ticket should be valid", ticket.isValid());
-//        Assert.assertEquals("Numbers should be the same as in test", chosenNumbers.get(0), boughtTicket.getNumber1());
-//        Assert.assertEquals("Numbers should be the same as in test", chosenNumbers.get(1), boughtTicket.getNumber2());
-//        Assert.assertEquals("Numbers should be the same as in test", chosenNumbers.get(2), boughtTicket.getNumber3());
-//        Assert.assertEquals("Numbers should be the same as in test", chosenNumbers.get(3), boughtTicket.getNumber4());
-//        Assert.assertEquals("Numbers should be the same as in test", chosenNumbers.get(4), boughtTicket.getNumber5());
-//        Assert.assertEquals("Numbers should be the same as in test", chosenNumbers.get(5), boughtTicket.getNumber6());
     }
 
 }
