@@ -111,12 +111,8 @@ public class CashierImplTest {
 
         Assert.assertNotNull("Ticket should not be null", ticket);
         Assert.assertTrue("Ticket should be valid", ticket.isValid());
-        Assert.assertEquals("Numbers should be the same as in test", chosenNumbers.get(0), boughtTicket.getNumber1());
-        Assert.assertEquals("Numbers should be the same as in test", chosenNumbers.get(1), boughtTicket.getNumber2());
-        Assert.assertEquals("Numbers should be the same as in test", chosenNumbers.get(2), boughtTicket.getNumber3());
-        Assert.assertEquals("Numbers should be the same as in test", chosenNumbers.get(3), boughtTicket.getNumber4());
-        Assert.assertEquals("Numbers should be the same as in test", chosenNumbers.get(4), boughtTicket.getNumber5());
-        Assert.assertEquals("Numbers should be the same as in test", chosenNumbers.get(5), boughtTicket.getNumber6());
+
+        Assert.assertEquals("Ticket should be as setup", ticket, boughtTicket);
     }
 
     //    @Test(expected = InvalidTicketNumberException.class)

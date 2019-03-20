@@ -1,5 +1,7 @@
 package com.endava.ap.lotery.model;
 
+import com.google.common.base.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
@@ -124,5 +125,29 @@ public class Ticket {
 
     public void setOwner(Participant owner) {
         this.owner = owner;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Ticket)) {
+            return false;
+        }
+        Ticket ticket = (Ticket) o;
+        return Objects.equal(id, ticket.id) &&
+                Objects.equal(number1, ticket.number1) &&
+                Objects.equal(number2, ticket.number2) &&
+                Objects.equal(number3, ticket.number3) &&
+                Objects.equal(number4, ticket.number4) &&
+                Objects.equal(number5, ticket.number5) &&
+                Objects.equal(number6, ticket.number6) &&
+                Objects.equal(owner, ticket.owner);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, number1, number2, number3, number4, number5, number6, owner);
     }
 }
