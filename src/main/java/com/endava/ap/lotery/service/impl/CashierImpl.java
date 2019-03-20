@@ -2,6 +2,7 @@ package com.endava.ap.lotery.service.impl;
 
 import com.endava.ap.lotery.dao.ParticipantDao;
 import com.endava.ap.lotery.dao.TicketDao;
+import com.endava.ap.lotery.exception.InvalidTicketNumberException;
 import com.endava.ap.lotery.model.Participant;
 import com.endava.ap.lotery.model.Ticket;
 import com.endava.ap.lotery.service.Cashier;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CashierImpl implements Cashier {
@@ -22,7 +22,7 @@ public class CashierImpl implements Cashier {
     TicketDao ticketDao;
 
     @Transactional
-    public Participant registerParticipant(String firstName, String lastName, String email){
+    public Participant registerParticipant(String firstName, String lastName, String email) {
         final Participant participant = new Participant();
         participant.setEmail(email);
         participant.setFirstName(firstName);
@@ -34,7 +34,9 @@ public class CashierImpl implements Cashier {
     }
 
     @Transactional
-    public Ticket buyTicket(List<Integer> integerList, Participant participant) {
+    public Ticket buyTicket(List<Integer> integerList, Participant participant) throws InvalidTicketNumberException {
+
+        areValidTicketNumbers(integerList);
 
         Ticket ticket = new Ticket();
         ticket.setNumber1(integerList.get(0));
@@ -48,5 +50,13 @@ public class CashierImpl implements Cashier {
         ticketDao.save(ticket);
 
         return ticket;
+    }
+
+    private void areValidTicketNumbers(List<Integer> integerList) throws InvalidTicketNumberException {
+        integerList.forEach(integer -> {
+            if (integer < 1 || integer > 49) {
+                throw new InvalidTicketNumberException("Numbers should be between 1 and 50");
+            }
+        });
     }
 }
