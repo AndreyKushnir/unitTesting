@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -43,6 +44,36 @@ public class CashierImplTest {
     private static final String FIRSTNAME = "first";
     private static final String LASTNAME = "last";
     private static final String EMAIL = "firstlast@gmail.com";
+
+    class TicketCompare implements Comparator<Ticket> {
+        @Override
+        public int compare(Ticket comparableTicket, Ticket comparedTicked) {
+            int result = 0;
+
+            if (comparableTicket.getNumber1().equals(comparedTicked.getNumber1())) {
+                result = 0;
+            }
+            if (comparableTicket.getNumber2().equals(comparedTicked.getNumber2()) && result == 0) {
+                result = 0;
+            }
+            if (comparableTicket.getNumber3().equals(comparedTicked.getNumber3()) && result == 0) {
+                result = 0;
+            }
+            if (comparableTicket.getNumber4().equals(comparedTicked.getNumber4()) && result == 0) {
+                result = 0;
+            }
+            if (comparableTicket.getNumber5().equals(comparedTicked.getNumber5()) && result == 0) {
+                result = 0;
+            }
+            if (comparableTicket.getNumber6().equals(comparedTicked.getNumber6()) && result == 0) {
+                result = 0;
+            }
+
+            return result;
+        }
+    }
+
+    private final TicketCompare ticketCompare = new TicketCompare();
 
     @Test
     void whenRegisterParticipantBasicHappyPath() {
@@ -90,18 +121,18 @@ public class CashierImplTest {
         chosenNumbers.add(45);
         chosenNumbers.add(1);
 
-        Ticket ticket = new Ticket();
-        ticket.setId(1L);
-        ticket.setNumber1(4);
-        ticket.setNumber2(12);
-        ticket.setNumber3(7);
-        ticket.setNumber4(33);
-        ticket.setNumber5(45);
-        ticket.setNumber6(1);
+        Ticket expectedTicket = new Ticket();
+        expectedTicket.setId(1L);
+        expectedTicket.setNumber1(4);
+        expectedTicket.setNumber2(12);
+        expectedTicket.setNumber3(7);
+        expectedTicket.setNumber4(33);
+        expectedTicket.setNumber5(45);
+        expectedTicket.setNumber6(1);
 
         ArgumentCaptor<Ticket> ticketArgumentCaptor = ArgumentCaptor.forClass(Ticket.class);
 
-        when(ticketDao.save(ticketArgumentCaptor.capture())).thenReturn(ticket);
+        when(ticketDao.save(ticketArgumentCaptor.capture())).thenReturn(expectedTicket);
 
         //Act
         Ticket boughtTicket = cashier.buyTicket(chosenNumbers, registeredParticipant);
@@ -109,12 +140,12 @@ public class CashierImplTest {
         //Assert
         verify(ticketDao, times(1)).save(ticketArgumentCaptor.capture());
 
-        Assert.assertNotNull("Ticket should not be null", ticket);
-        Assert.assertTrue("Ticket should be valid", ticket.isValid());
+        Assert.assertNotNull("Ticket should not be null", boughtTicket);
+        Assert.assertTrue("Ticket should be valid", boughtTicket.isValid());
 
-        Assert.assertEquals("Ticket should be as setup", ticket, boughtTicket);
+        Assert.assertEquals("ticket should be as setup", 0, ticketCompare.compare(expectedTicket,boughtTicket));
     }
-
+    
     //    @Test(expected = InvalidTicketNumberException.class)
     @Test
     void whenBuyTicket_WithIncorrectNumber_ExpectException() {
